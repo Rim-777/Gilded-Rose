@@ -116,10 +116,21 @@ defmodule GildedRose do
     end
   end
 
+  defp step_4(item) do
+    case String.contains?(item.name, "Conjured") do
+      true ->
+        %{item | quality: item.quality - 1}
+
+      false ->
+        item
+    end
+  end
+
   def update_item(item) do
     item
     |> step_1()
     |> step_2()
     |> step_3()
+    |> step_4()
   end
 end
