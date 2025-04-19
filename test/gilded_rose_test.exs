@@ -11,6 +11,7 @@ defmodule GildedRoseTest do
       %Item{name: "Backstage passes to a TAFKAL80ETC concert", sell_in: 15, quality: 20},
       %Item{name: "Backstage passes to a TAFKAL80ETC concert", sell_in: 10, quality: 49},
       %Item{name: "Backstage passes to a TAFKAL80ETC concert", sell_in: 5, quality: 49},
+      %Item{name: "Backstage passes to a TAFKAL80ETC concert", sell_in: -1, quality: 49},
       %Item{name: "Conjured Mana Cake", sell_in: 3, quality: 6}
     ]
 
@@ -35,6 +36,7 @@ defmodule GildedRoseTest do
         sell_in: 2,
         quality: 50
       },
+      %Item{name: "Backstage passes to a TAFKAL80ETC concert", sell_in: -4, quality: 0},
       %Item{name: "Conjured Mana Cake", sell_in: 0, quality: 0}
     ]
 
