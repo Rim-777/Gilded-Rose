@@ -32,7 +32,7 @@ defmodule GildedRose do
     |> update_decreasable_item()
     |> update_increasable_item()
     |> update_eventtable_item()
-    |> update_conjured_item?()
+    |> update_conjured_item()
   end
 
   defp update_decreasable_item(item) do
@@ -46,7 +46,7 @@ defmodule GildedRose do
   end
 
   defp decrease_with_negative_sell_in(item) do
-    case item.sell_in < 0 do
+    case negative_sell_in?(item) do
       true ->
         decrease_quality(item)
 
@@ -67,7 +67,7 @@ defmodule GildedRose do
   end
 
   defp increase_with_negative_sell_in(item) do
-    case item.sell_in < 0 do
+    case negative_sell_in?(item) do
       true ->
         increase_quality(item)
 
@@ -75,6 +75,10 @@ defmodule GildedRose do
         item
     end
     |> increase_quality()
+  end
+
+  defp negative_sell_in?(item) do
+    item.sell_in < 0
   end
 
   defp update_eventtable_item(item) do
@@ -92,7 +96,7 @@ defmodule GildedRose do
   end
 
   defp update_eventable_item(item) do
-    case item.quality < @max_quality do
+    case has_not_max_quality?(item) do
       true ->
         increase_quality(item)
 
@@ -102,7 +106,7 @@ defmodule GildedRose do
   end
 
   defp update_upcoming_eventable_item(item) do
-    case item.quality < @max_quality and item.sell_in < 11 do
+    case has_not_max_quality?(item) and item.sell_in < 11 do
       true ->
         increase_quality(item)
 
@@ -112,7 +116,7 @@ defmodule GildedRose do
   end
 
   defp update_imminent_eventable_item(item) do
-    case item.quality < @max_quality and item.sell_in < 6 do
+    case has_not_max_quality?(item) and item.sell_in < 6 do
       true ->
         increase_quality(item)
 
@@ -122,7 +126,7 @@ defmodule GildedRose do
   end
 
   defp update_passed_eventable_item(item) do
-    case item.sell_in < 0 do
+    case negative_sell_in?(item) do
       true ->
         %{item | quality: 0}
 
@@ -141,7 +145,7 @@ defmodule GildedRose do
     end
   end
 
-  defp update_conjured_item?(item) do
+  defp update_conjured_item(item) do
     case conjured_type?(item) do
       true ->
         decrease_quality(item, 2)
@@ -157,5 +161,9 @@ defmodule GildedRose do
 
   defp decrease_quality(item, delta \\ 1) do
     %{item | quality: item.quality - delta}
+  end
+
+  defp has_not_max_quality?(item) do
+    item.quality < @max_quality
   end
 end
