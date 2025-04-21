@@ -5,6 +5,8 @@ defmodule GildedRose.ItemTypes do
   can increase or decrease in quality, and other specific features.
   """
 
+  alias GildedRose.StringUtility
+
   @available_types %{
     aged_brie: :aged_brie,
     backstage: :backstage,
@@ -88,7 +90,7 @@ defmodule GildedRose.ItemTypes do
   end
 
   defp item_type(%Item{name: name}) do
-    normalized_name = normalize_string(name)
+    normalized_name = StringUtility.trim_downcase_string(name)
 
     cond do
       String.contains?(normalized_name, "aged brie") ->
@@ -106,12 +108,5 @@ defmodule GildedRose.ItemTypes do
       true ->
         @available_types.regular
     end
-  end
-
-  defp normalize_string(string) do
-    string
-    |> String.trim()
-    |> String.replace(~r/\s+/, " ")
-    |> String.downcase()
   end
 end

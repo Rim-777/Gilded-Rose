@@ -31,7 +31,7 @@ defmodule GildedRose do
     |> decrease_sell_in()
     |> update_decreasable_item()
     |> update_increasable_item()
-    |> update_eventtable_item()
+    |> update_eventable_item()
     |> update_conjured_item()
   end
 
@@ -81,11 +81,11 @@ defmodule GildedRose do
     item.sell_in < 0
   end
 
-  defp update_eventtable_item(item) do
+  defp update_eventable_item(item) do
     case eventable_type?(item) do
       true ->
         item
-        |> update_eventable_item()
+        |> update_regular_eventable_item()
         |> update_upcoming_eventable_item()
         |> update_imminent_eventable_item()
         |> update_passed_eventable_item()
@@ -95,7 +95,7 @@ defmodule GildedRose do
     end
   end
 
-  defp update_eventable_item(item) do
+  defp update_regular_eventable_item(item) do
     case has_not_max_quality?(item) do
       true ->
         increase_quality(item)
