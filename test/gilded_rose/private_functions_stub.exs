@@ -43,12 +43,12 @@ defmodule GildedRose.PrivateFunctionsStub do
   defp increase_with_negative_sell_in(item) do
     case negative_sell_in?(item) do
       true ->
-        increase_quality(item)
+        increment_quality(item)
 
       false ->
         item
     end
-    |> increase_quality()
+    |> increment_quality()
   end
 
   defp negative_sell_in?(item) do
@@ -70,19 +70,13 @@ defmodule GildedRose.PrivateFunctionsStub do
   end
 
   defp update_regular_eventable_item(item) do
-    case has_not_max_quality?(item) do
-      true ->
-        increase_quality(item)
-
-      false ->
-        item
-    end
+    increment_quality(item)
   end
 
   defp update_upcoming_eventable_item(item) do
-    case has_not_max_quality?(item) and item.sell_in < 11 do
+    case item.sell_in < 11 do
       true ->
-        increase_quality(item)
+        increment_quality(item)
 
       false ->
         item
@@ -90,9 +84,9 @@ defmodule GildedRose.PrivateFunctionsStub do
   end
 
   defp update_imminent_eventable_item(item) do
-    case has_not_max_quality?(item) and item.sell_in < 6 do
+    case item.sell_in < 6 do
       true ->
-        increase_quality(item)
+        increment_quality(item)
 
       false ->
         item
@@ -129,15 +123,17 @@ defmodule GildedRose.PrivateFunctionsStub do
     end
   end
 
-  def increase_quality(item, delta \\ 1) do
-    %{item | quality: item.quality + delta}
+  def increment_quality(item) do
+    case item.quality < @max_quality do
+      true ->
+        %{item | quality: item.quality + 1}
+
+      false ->
+        item
+    end
   end
 
   def decrease_quality(item, delta \\ 1) do
     %{item | quality: item.quality - delta}
-  end
-
-  def has_not_max_quality?(item) do
-    item.quality < @max_quality
   end
 end

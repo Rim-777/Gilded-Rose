@@ -5,15 +5,9 @@ defmodule GildedRose.StubTest do
 
   import GildedRose.PrivateFunctionsStub
 
-  test "has_not_max_quality/1 checks if an item quality is less them max" do
-    assert has_not_max_quality?(%Item{quality: 50}) == false
-    assert has_not_max_quality?(%Item{quality: 49}) == true
-  end
-
-  test "increase_quality/1 increases item quality value" do
-    item = %Item{quality: 48}
-    assert increase_quality(item) == %Item{quality: 49}
-    assert increase_quality(item, 2) == %Item{quality: 50}
+  test "increment_quality/1 increases item quality value" do
+    assert %Item{quality: 49} = increment_quality(%Item{quality: 48})
+    assert %Item{quality: 50} = increment_quality(%Item{quality: 50})
   end
 
   test "decrease_quality/1 decreases item quality value" do
@@ -67,7 +61,6 @@ defmodule GildedRose.StubTest do
     assert %Item{quality: 2} = update_increasable_item(%Item{name: "Aged Brie", sell_in: -1, quality: 0})
 
     non_increasable_item = %Item{name: "Some Item", sell_in: 5, quality: 30}
-
     assert update_increasable_item(non_increasable_item) == non_increasable_item
   end
 
