@@ -69,12 +69,12 @@ defmodule GildedRose do
   defp increase_with_negative_sell_in(item) do
     case negative_sell_in?(item) do
       true ->
-        increase_quality(item)
+        increment_quality(item)
 
       false ->
         item
     end
-    |> increase_quality()
+    |> increment_quality()
   end
 
   defp negative_sell_in?(item) do
@@ -96,13 +96,13 @@ defmodule GildedRose do
   end
 
   defp update_regular_eventable_item(item) do
-    increase_quality(item)
+    increment_quality(item)
   end
 
   defp update_upcoming_eventable_item(item) do
     case item.sell_in < 11 do
       true ->
-        increase_quality(item)
+        increment_quality(item)
 
       false ->
         item
@@ -112,7 +112,7 @@ defmodule GildedRose do
   defp update_imminent_eventable_item(item) do
     case item.sell_in < 6 do
       true ->
-        increase_quality(item)
+        increment_quality(item)
 
       false ->
         item
@@ -149,10 +149,10 @@ defmodule GildedRose do
     end
   end
 
-  defp increase_quality(item, delta \\ 1) do
+  defp increment_quality(item) do
     case item.quality < @max_quality do
       true ->
-        %{item | quality: item.quality + delta}
+        %{item | quality: item.quality + 1}
 
       false ->
         item
